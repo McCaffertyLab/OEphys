@@ -13,7 +13,7 @@ import numpy as np
 
 def load_data(folder, channels):
     # point loading engine to relevant data file
-    folder = os.path.join('/home/mccaffertylab/Documents/Neural Data (Live)' + folder)
+    folder = os.path.join('/home/mccaffertylab/Documents/Neural Data (Live)', folder)
     session = Session(folder)  # import datafile into memory mapped object
     # extract continuous data into separate variable
     data_mem_map = session.recordnodes[0].recordings[0].continuous[0].samples
