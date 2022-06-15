@@ -3,12 +3,12 @@
 
 Usage:
 import DataLoading as DL
-import os
 data = DL.load_data('<filename>',[<channel array>])
 """
 # import package dependency from OEPhys team (https://github.com/open-ephys/open-ephys-python-tools)
 from open_ephys.analysis import Session
 import numpy as np
+import os
 
 
 def load_data(folder, channels):
