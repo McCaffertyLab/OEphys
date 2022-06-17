@@ -1,5 +1,6 @@
 """
- function to open an OEphys data file, and return continuous uV data from specified channels
+
+Some helper functions for loading in continuous OEPhys data, applying a filter...
 
 Usage:
 import DataLoading as DL
@@ -7,11 +8,18 @@ data = DL.load_data('<filename>',[<channel array>])
 """
 # import package dependency from OEPhys team (https://github.com/open-ephys/open-ephys-python-tools)
 from open_ephys.analysis import Session
+from scipy import signal
 import numpy as np
 import os
 
 
 def load_data(folder, channels):
+    """
+    function to open an OEphys data file, and return continuous uV data from specified channels
+    :param folder:
+    :param channels:
+    :return:
+    """
     # point loading engine to relevant data file
     folder = os.path.join('/home/mccaffertylab/Documents/Neural Data (Live)', folder)
     session = Session(folder)  # import datafile into memory mapped object
@@ -31,3 +39,25 @@ def load_data(folder, channels):
     data = data_mem_map[:, channels] * bit_volt
 
     return data
+
+
+def ButterFilt(data,low_corner,high_corner, fs)
+    """
+    function to design and implement a 4th order Butterworth Bandpass filter, and run it over a data matrix forward & backward
+    
+    :param data: ndarray
+                matrix of time-series data
+    :param low_corner: int
+                        frequency (Hz) of low cut-off frequency
+    :param high_corner: int
+                        frequency (Hz) of high cut-off frequency
+    :param fs: int
+                Sample frequency of data (Hz)
+    :return: ndarray
+                Filtered time-series data
+    """
+
+    wn = np.array([low_corner, high_corner]) #create corner frequency array
+    sos = signal.butter(2,wn,btype='bandpass',output='sos',fs=fs) #compute sos coefficients for filter
+    filt_data= signal.sosfiltfilt(sos, data, axis=0) #perform forward and backwards filtering over 1st dimension of data array
+    return filt_data
